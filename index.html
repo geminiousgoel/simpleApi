@@ -1,0 +1,81 @@
+<html>
+
+	<head>
+		<title>World Stats</title>
+		
+		<script>		
+			function dataToTable(index,country, capital,callingCode, timezones,flag,domain)
+			{
+					var table = document.getElementById("dataTable");  
+					table.border = "1";
+					
+					var rowCount = table.rows.length;
+					var row = table.insertRow(rowCount);
+					
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					var cell5 = row.insertCell(4);
+					var cell6 = row.insertCell(5);
+					var cell7 = row.insertCell(6);
+					
+					cell1.innerHTML = index;
+					cell2.innerHTML = country;
+					cell3.innerHTML = capital;				
+					cell4.innerHTML = callingCode;
+					cell5.innerHTML = timezones;
+					cell6.innerHTML = "<img src="+flag+" alt='flag' style='height:50px;width:75px;' />";
+					cell7.innerHTML = domain;
+			}
+		
+			function callFunc()
+			{	
+				var xhttp = new XMLHttpRequest();
+				
+				xhttp.onreadystatechange = function() 
+				{
+					if (this.readyState == 4 && this.status == 200) 
+					{
+					   	var json = JSON.parse(xhttp.responseText); 						
+						 
+						for (var i =0; i<json.length; i++)
+						 {							
+							var country = json[i];	
+							
+							dataToTable(i+1,country.name, country.capital,country.callingCodes,country.timezones[0],country.flag,country.topLevelDomain);
+							
+						 }						 
+					}
+				};
+				
+				xhttp.open("GET", "https://restcountries.eu/rest/v2/all", true);
+
+				xhttp.send();	
+			}
+		
+		</script>
+		
+	</head>
+	<body onload="callFunc();" >						
+			<table id="dataTable" onload="functionTest()" style="text-align: center;" >
+			<thead> 
+				<tr> 
+					 <th>Index</th> 
+					 <th>Name</th> 
+					 <th>Capital</th>
+					 <th>Calling Code</th>
+					 <th>Timezones</th> 					 
+					 <th>Flag</th> 					 
+					 <th>Domain</th> 					 
+				</tr> 
+			 </thead> 
+			 
+			 <tbody>
+			 
+			 </tbody>
+			</table>
+			
+	</body>
+
+</html>
